@@ -1,0 +1,470 @@
+/* ============================================================
+ * polish.css — UI design system v3
+ * Минимализм, острые углы, микро-анимации, контрастная типографика
+ * ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --c-red:    #D73A3A;
+  --c-red-2:  #FF4D5A;
+  --c-red-d:  #B5202E;
+  --c-bg:     #000000;
+  --c-fg:     #FFFFFF;
+  --c-muted:  rgba(255,255,255,.55);
+  --c-line:   rgba(255,255,255,.12);
+  --c-line-d: rgba(255,255,255,.06);
+}
+
+/* === Typography utility === */
+.instrument { font-family: 'Instrument Serif', Georgia, serif; }
+.mono       { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+/* === Sticky scroll-progress === */
+.scroll-progress {
+  position: fixed; left: 0; top: 0; right: 0;
+  height: 2px; z-index: 60;
+  background: transparent;
+  pointer-events: none;
+}
+.scroll-progress::after {
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: var(--scroll-pct, 0%);
+  background: linear-gradient(90deg, #B5202E 0%, #D73A3A 50%, #FF4D5A 100%);
+  transition: width .08s linear;
+}
+
+/* === Header — minimal === */
+.site-header {
+  position: relative; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px;
+}
+@media (min-width: 768px) { .site-header { padding: 22px 40px; } }
+
+.site-header a.nav-link {
+  color: rgba(255,255,255,.75);
+  font-size: 12px; font-weight: 300; letter-spacing: .02em;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: color .2s, background .2s;
+  position: relative;
+}
+.site-header a.nav-link:hover { color: #fff; background: rgba(255,255,255,.06); }
+.site-header a.nav-link.active { color: #fff; background: rgba(255,255,255,.08); }
+.site-header a.nav-link.active::before {
+  content: ""; position: absolute; left: 50%; bottom: 4px;
+  width: 4px; height: 4px; transform: translateX(-50%);
+  background: var(--c-red);
+}
+
+/* === Logo monogram (asterisk) === */
+.logo-mark {
+  display: inline-flex; align-items: center; gap: 12px;
+}
+.logo-mark svg { color: #fff; }
+.logo-mark .logo-text {
+  font-size: 13px; font-weight: 300; letter-spacing: -.005em;
+}
+.logo-mark .logo-text span { color: rgba(255,255,255,.4); }
+
+/* === Login button group with gooey arrow === */
+.gbtn-group {
+  position: relative; display: inline-flex; align-items: center;
+}
+.gbtn-arrow {
+  position: absolute; right: 0;
+  width: 32px; height: 32px;
+  border-radius: 9999px; background: #fff; color:#000;
+  display:flex; align-items:center; justify-content:center;
+  transform: translateX(-40px) scale(.85);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), opacity .25s;
+  cursor: pointer;
+}
+.gbtn-group:hover .gbtn-arrow {
+  transform: translateX(-72px) scale(1);
+  opacity: 1;
+}
+.gbtn-main {
+  position: relative; z-index: 2;
+  padding: 8px 22px; height: 32px;
+  border-radius: 9999px; background: #fff; color: #000;
+  font-size: 12px; line-height: 1; cursor: pointer;
+  transition: background .2s;
+  border: none;
+}
+.gbtn-main:hover { background: rgba(255,255,255,.92); }
+
+/* === Buttons (square — NO standard rounding except pill CTAs) === */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 24px;
+  font-size: 12px; line-height: 1; font-weight: 400;
+  letter-spacing: .12em; text-transform: uppercase;
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  transition: background .25s, color .25s, border-color .25s, transform .15s;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* Sliding bg micro-anim */
+.btn::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--c-red);
+  transform: translateY(101%);
+  transition: transform .35s cubic-bezier(.2,.7,.2,1);
+  z-index: -1;
+}
+.btn:hover::before { transform: translateY(0); }
+.btn-light { background: #fff; color: #000; border: 1px solid #fff; }
+.btn-light:hover { color: #fff; border-color: var(--c-red); }
+.btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.3); }
+.btn-ghost:hover { color: #fff; border-color: var(--c-red); }
+.btn-red   { background: var(--c-red); color: #fff; border: 1px solid var(--c-red); }
+.btn-red::before { background: var(--c-red-d); }
+.btn-red:hover { color: #fff; border-color: var(--c-red-d); }
+.btn:active { transform: translateY(1px); }
+
+/* Pill rounded buttons — kept for hero / chips style */
+.btn-pill {
+  border-radius: 9999px;
+  padding: 12px 28px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+.btn-pill::before { display: none; }
+.btn-pill.btn-light { background: #fff; color: #000; border: 1px solid transparent; }
+.btn-pill.btn-light:hover { background: rgba(255,255,255,.9); }
+.btn-pill.btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.3); }
+.btn-pill.btn-ghost:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.6); }
+
+/* === Card system — square edges, hairline border, micro-hover === */
+.card {
+  position: relative;
+  background: rgba(255,255,255,.018);
+  border: 1px solid var(--c-line-d);
+  padding: 28px;
+  transition: border-color .3s, background .3s, transform .3s;
+  border-radius: 0;
+}
+.card:hover {
+  border-color: rgba(215,58,58,.45);
+  background: rgba(215,58,58,.03);
+  transform: translateY(-2px);
+}
+.card-red {
+  background: var(--c-red);
+  color: #fff;
+  border: 1px solid var(--c-red);
+}
+.card-red:hover { background: var(--c-red-d); border-color: var(--c-red-d); transform: translateY(-2px); }
+.card-glass {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+/* Animated bottom border on card hover (без overflow:hidden — чтобы badge не клипался) */
+.card-hover-line {
+  position: relative;
+}
+.card-hover-line::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--c-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.card-hover-line:hover::after { transform: scaleX(1); }
+
+/* === Чипы — square edges === */
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 6px 12px;
+  border-radius: 0;
+  font-size: 11px; font-weight: 300;
+  color: rgba(255,255,255,.85);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.chip.chip-red { background: rgba(215,58,58,.10); border-color: rgba(215,58,58,.30); color: #ff8a8a; }
+.chip.chip-glass {
+  background: rgba(255,255,255,.05);
+  backdrop-filter: blur(10px) saturate(140%);
+  position: relative;
+}
+.chip.chip-glass::before {
+  content:""; position:absolute; top:0; left:6px; right:6px; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+}
+
+/* Square label-tag (editorial) */
+.label-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .26em; text-transform: uppercase;
+  color: rgba(255,255,255,.7);
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 5px 9px; background: rgba(0,0,0,.25);
+}
+.label-tag.red {
+  color: #fff; border-color: rgba(215,58,58,.4); background: var(--c-red);
+}
+.label-tag.dark {
+  background: rgba(0,0,0,.6);
+}
+
+/* Vertical side-label */
+.label-vert {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+}
+
+/* === Display heading — более деликатные размеры + место под descenders === */
+.h-display {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 300;
+  font-size: clamp(32px, 4.8vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -.018em;
+  padding-bottom: .04em;
+}
+.h-section {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 300;
+  font-size: clamp(24px, 3.6vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -.018em;
+  padding-bottom: .04em;
+}
+.h-mini {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  font-size: clamp(20px, 2.4vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -.012em;
+}
+.h-display em, .h-section em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.01em;
+}
+
+/* === Reveal-mask animation — учёт descenders italic === */
+.mask-reveal {
+  overflow: hidden;
+  display: inline-block;
+  line-height: 1.12;
+  padding-bottom: .12em;
+  margin-bottom: -.04em;
+}
+.mask-reveal > .mask-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 1s cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+  padding-bottom: .04em;
+}
+.mask-reveal.visible > .mask-inner { transform: translateY(0); }
+
+/* === Project codes / mono labels === */
+.project-code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .25em;
+  color: rgba(255,255,255,.4);
+  text-transform: uppercase;
+}
+
+/* === Section dividers === */
+.divider-line { height: 1px; background: rgba(255,255,255,.08); }
+.divider-mono { display: flex; align-items: center; gap: 14px; }
+.divider-mono::before, .divider-mono::after {
+  content:""; flex: 1; height: 1px; background: rgba(255,255,255,.08);
+}
+.divider-mono > span {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+}
+
+/* === Pulsing circle (universal) === */
+.pulse-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.pulse-ring {
+  position: absolute; inset: 0;
+  border-radius: 9999px;
+  background: conic-gradient(from 0deg,
+    #D73A3A 0%, transparent 22%,
+    transparent 50%,
+    #ff5a5a 72%, transparent 100%);
+  mask: radial-gradient(circle, transparent 64%, #000 66%);
+  -webkit-mask: radial-gradient(circle, transparent 64%, #000 66%);
+  animation: spin 6s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(215,58,58,.55));
+}
+.pulse-core {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff7a7a 0%, #D73A3A 50%, #6b1414 100%);
+  box-shadow: 0 0 24px rgba(215,58,58,.5), inset 0 0 8px rgba(255,255,255,.2);
+  animation: throb 2.4s ease-in-out infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes throb { 0%,100% { transform: scale(.92);} 50% { transform: scale(1.06); opacity:.95;} }
+.rotating-text { animation: spin 22s linear infinite; }
+
+/* === Number count-up — мона-нумерация === */
+.count-up { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* === Magnetic button === */
+[data-magnet] { transition: transform .25s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+
+/* === Photo treatments === */
+.photo-bw { overflow: hidden; }
+.photo-bw img { filter: grayscale(1) contrast(1.1); transition: filter .5s ease; }
+.photo-bw:hover img { filter: grayscale(.5) contrast(1.18); }
+
+.photo-duotone { position: relative; overflow: hidden; isolation: isolate; }
+.photo-duotone img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: grayscale(1) contrast(1.18) brightness(.78);
+  transition: filter .6s ease;
+}
+.photo-duotone::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(215,58,58,.78) 0%, rgba(215,58,58,.62) 60%, rgba(160,15,28,.78) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* === Photo-tint — лёгкая красная плёнка, фото остаётся читаемым === */
+.photo-tint { position: relative; overflow: hidden; isolation: isolate; }
+.photo-tint img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(1.02) contrast(1.04) saturate(.92);
+  transition: filter .6s ease;
+}
+.photo-tint::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(170deg, rgba(215,58,58,.10) 0%, rgba(215,58,58,.04) 40%, rgba(0,0,0,.30) 100%);
+  mix-blend-mode: soft-light;
+}
+.photo-tint::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(ellipse at 60% 40%, transparent 50%, rgba(0,0,0,.35) 100%);
+}
+
+/* Soft floating animation for hero photo */
+.photo-float { animation: float 9s ease-in-out infinite; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* === Icons via inline SVG. Universal sizing === */
+.ico { width: 18px; height: 18px; flex-shrink: 0; stroke-width: 1.5; }
+.ico-lg { width: 24px; height: 24px; stroke-width: 1.4; }
+
+/* === Page transitions === */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: pt-out .3s cubic-bezier(.4,0,.2,1) both; }
+::view-transition-new(root) { animation: pt-in  .4s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes pt-out { to { opacity: 0; filter: blur(4px); } }
+@keyframes pt-in  { from { opacity: 0; filter: blur(4px); } }
+.pt-fade-out { animation: pt-out .3s cubic-bezier(.4,0,.2,1) both; }
+
+/* === Bottom mark / corners === */
+.bottom-mark {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(255,255,255,.32);
+}
+
+/* === Layout helpers === */
+.editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .editorial-grid { gap: 24px; }
+}
+
+/* === Form input — square === */
+.input-line {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #fff;
+  border-radius: 0;
+  width: 100%;
+  transition: border-color .25s, background .25s;
+}
+.input-line:focus { outline: none; border-color: var(--c-red); background: rgba(215,58,58,.04); }
+.input-line::placeholder { color: rgba(255,255,255,.35); }
+
+/* === Modal === */
+.modal-back {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(0,0,0,.78);
+  backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal-back.open { display: flex; }
+.modal-card {
+  background: #0A0A0B;
+  border: 1px solid rgba(255,255,255,.1);
+  width: 100%; max-width: 480px;
+  padding: 28px 28px 24px;
+  border-radius: 0;
+}
+
+/* === Mobile menu === */
+.menu-toggle {
+  width: 36px; height: 36px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px;
+  background: transparent; border: 1px solid rgba(255,255,255,.18);
+  cursor: pointer;
+  transition: border-color .25s;
+}
+.menu-toggle span {
+  width: 16px; height: 1.5px; background: #fff; transition: transform .25s, opacity .25s;
+}
+.menu-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.mobile-nav {
+  position: fixed; inset: 0; z-index: 70;
+  background: rgba(0,0,0,.96);
+  backdrop-filter: blur(20px);
+  padding: 80px 32px;
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.2,.7,.2,1);
+}
+.mobile-nav.open { transform: translateX(0); }
+.mobile-nav a {
+  display: block;
+  font-size: 28px; font-weight: 300; letter-spacing: -.01em;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: #fff;
+  transition: color .25s;
+}
+.mobile-nav a:hover { color: var(--c-red); }
+.mobile-nav a em { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; }
+
+/* === Print pretty === */
+@media print {
+  #bg-static-root { display: none !important; }
+}

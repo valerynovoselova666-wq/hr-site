@@ -1,0 +1,23 @@
+# robots.txt для hrmironenko.ru
+# Разрешаем индексацию всем поисковым системам
+
+User-agent: *
+Allow: /
+Disallow: /img/og-cover.png$
+Disallow: *.zip
+Crawl-delay: 1
+
+# Яндекс
+User-agent: Yandex
+Allow: /
+Clean-param: utm_source&utm_medium&utm_campaign&rs
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+# Карта сайта
+Sitemap: https://hrmironenko.ru/sitemap.xml
+
+# Хост (для Яндекса)
+Host: https://hrmironenko.ru

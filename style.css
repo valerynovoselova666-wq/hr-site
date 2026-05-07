@@ -39,9 +39,10 @@
 .site-header {
   position: relative; z-index: 30;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 24px;
+  padding: 18px 32px;
 }
-@media (min-width: 768px) { .site-header { padding: 22px 40px; } }
+@media (min-width: 768px) { .site-header { padding: 22px 56px; } }
+@media (min-width: 1280px) { .site-header { padding: 24px 96px; } }
 
 .site-header a.nav-link {
   color: rgba(255,255,255,.75);
